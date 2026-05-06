@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Admin Login')}"></head>
+<body>
+    <div th:replace="~{layout :: navbar}"></div>
+
+    <style>
+        .auth-login-btn { display: none !important; }
+    </style>
+
+    <style>
+        .login-split {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            max-width: 1000px;
+            width: 100%;
+            margin: 2rem auto;
+            min-height: 600px;
+            background: var(--card-bg);
+        }
+        .login-image-side {
+            display: none;
+            flex: 1.2;
+            background: url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            position: relative;
+        }
+        .login-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(11, 15, 25, 0.95), rgba(11, 15, 25, 0.2));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 3rem;
+            color: white;
+        }
+        .login-form-side {
+            flex: 1;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        @media (min-width: 768px) {
+            .login-split {
+                flex-direction: row;
+                margin: 4rem auto;
+            }
+            .login-image-side {
+                display: block;
+            }
+            .login-form-side {
+                padding: 4rem;
+            }
+        }
+    </style>
+
+    <main class="container" style="display: flex; align-items: center; justify-content: center; min-height: 80vh;">
+        <div class="login-split glass animate-in">
+            <!-- Left Side: Professional Event Image -->
+            <div class="login-image-side">
+                <div class="login-image-overlay">
+                    <div style="display: inline-block; padding: 0.5rem 1rem; background: rgba(0, 242, 254, 0.2); backdrop-filter: blur(4px); border-radius: 2rem; color: var(--primary); font-weight: 600; font-size: 0.85rem; margin-bottom: 1rem; width: fit-content; border: 1px solid rgba(0, 242, 254, 0.3);">
+                        <i class="fas fa-star" style="margin-right: 0.5rem;"></i> Premium Access
+                    </div>
+                    <h3 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2; color: white; letter-spacing: -0.5px;">Manage Events <br>with Excellence</h3>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 1.05rem; line-height: 1.6; max-width: 400px;">
+                        Streamline your university operations, coordinate with attendees, and track registrations all in one powerful portal.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Side: Login Form -->
+            <div class="login-form-side">
+                <div style="text-align: center; margin-bottom: 2.5rem;">
+                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: white; font-size: 1.75rem; box-shadow: 0 10px 20px -5px rgba(0, 242, 254, 0.4); transform: rotate(-5deg);">
+                        <i class="fas fa-lock" style="transform: rotate(5deg);"></i>
+                    </div>
+                    <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem;">Admin Portal</h2>
+                    <p style="color: var(--text-muted);">Welcome back! Please enter your details.</p>
+                </div>
+
+                <div th:if="${param.error}" style="padding: 1rem; margin-bottom: 1.5rem; background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; color: #ef4444; border-radius: 0.5rem; font-size: 0.9rem; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fas fa-exclamation-circle"></i> Invalid email or password.
+                </div>
+
+                <form th:action="@{/login}" method="post">
+                    <div class="form-group">
+                        <label style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Email Address</label>
+                        <div style="position: relative;">
+                            <i class="fas fa-envelope" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                            <input type="email" name="username" class="form-control" placeholder="admin@example.com" required style="padding-left: 2.75rem;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                            <span>Password</span>
+                            <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;">Forgot?</a>
+                        </label>
+                        <div style="position: relative;">
+                            <i class="fas fa-key" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                            <input type="password" name="password" class="form-control" placeholder="••••••••" required style="padding-left: 2.75rem;">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; margin-top: 1rem; font-size: 1rem; border-radius: 1rem; display: flex; justify-content: center; align-items: center; gap: 0.5rem;">
+                        Sign In <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+                
+                <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center;">
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">Demo Credentials</p>
+                    <div style="display: inline-flex; gap: 1rem; background: rgba(15, 23, 42, 0.3); padding: 0.6rem 1.2rem; border-radius: 2rem; border: 1px solid var(--border);">
+                        <span style="font-size: 0.8rem; color: var(--text-main);"><i class="fas fa-user" style="color: var(--text-muted); margin-right: 0.25rem;"></i> admin@example.com</span>
+                        <span style="font-size: 0.8rem; color: var(--border);">|</span>
+                        <span style="font-size: 0.8rem; color: var(--text-main);"><i class="fas fa-asterisk" style="color: var(--text-muted); margin-right: 0.25rem;"></i> admin123</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

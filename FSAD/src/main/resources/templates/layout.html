@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title + ' - Smart Campus'}">Smart Campus</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // Apply theme immediately to prevent flashing
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+<body>
+
+    <nav th:fragment="navbar" class="floating-nav glass">
+        <div class="nav-content">
+            <a th:href="@{/}" class="logo">
+                <i class="fas fa-layer-group" style="color: var(--primary); border-radius: 8px;"></i>
+                <span style="font-weight: 800; letter-spacing: -0.5px;">University Events</span>
+            </a>
+            <div class="nav-links">
+                <a th:href="@{/}">Home</a>
+                <a th:href="@{/events}">Events</a>
+                <a th:href="@{/my-registrations}">Registrations</a>
+                <div class="theme-toggle" id="themeBtn" title="Toggle Dark/Light Mode">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="background: rgba(0, 242, 254, 0.1); padding: 0.4rem 1rem; border-radius: 2rem; border: 1px solid rgba(0, 242, 254, 0.2); display: flex; align-items: center;">
+                        <i class="fas fa-user-circle" style="color: var(--primary); margin-right: 0.5rem;"></i>
+                        <span sec:authentication="name" style="color: var(--text-main); font-weight: 500; font-size: 0.9rem;">User ID</span>
+                    </div>
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/dashboard}" class="btn btn-primary" style="padding: 0.5rem 1.2rem; border-radius: 2rem;">Dashboard</a>
+                    <form th:action="@{/logout}" method="post" style="display:inline">
+                        <button type="submit" class="btn btn-outline" style="padding: 0.5rem 1.2rem; border-radius: 2rem;">Signout</button>
+                    </form>
+                </div>
+                <div sec:authorize="!isAuthenticated()" class="auth-login-btn">
+                    <a th:href="@{/login}" class="btn btn-primary" style="padding: 0.5rem 1.2rem; border-radius: 2rem;">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <footer th:fragment="footer" style="padding: 4rem 0; background: var(--glass); margin-top: 4rem; text-align: center;">
+        <div class="container">
+            <p>&copy; 2026 Smart Campus Event Management. All rights reserved.</p>
+        </div>
+        <script>
+            const themeBtn = document.getElementById('themeBtn');
+            const icon = themeBtn.querySelector('i');
+            
+            function updateIcon(theme) {
+                if (theme === 'dark') {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                } else {
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                }
+            }
+
+            // Set initial icon
+            updateIcon(document.documentElement.getAttribute('data-theme'));
+
+            themeBtn.addEventListener('click', () => {
+                let currentTheme = document.documentElement.getAttribute('data-theme');
+                let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+            });
+        </script>
+    </footer>
+
+</body>
+</html>

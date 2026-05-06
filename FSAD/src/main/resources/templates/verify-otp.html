@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Verify OTP')}"></head>
+<body>
+    <div th:replace="~{layout :: navbar}"></div>
+
+    <main class="container">
+        <div class="form-container glass animate-in" style="max-width: 400px; margin-top: 6rem;">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <div style="width: 60px; height: 60px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: white; font-size: 1.5rem;">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2>Verify OTP</h2>
+                <p style="color: var(--text-muted);">An OTP has been sent to <strong th:text="${email}"></strong></p>
+            </div>
+
+            <div th:if="${error}" class="glass" style="padding: 0.75rem; margin-bottom: 1.5rem; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; border-radius: 0.5rem; font-size: 0.875rem; text-align: center;" th:text="${error}">
+            </div>
+
+            <form th:action="@{/verify-otp}" method="post">
+                <div class="form-group">
+                    <label>Enter 6-Digit OTP</label>
+                    <input type="text" name="otp" class="form-control" placeholder="123456" pattern="\d{6}" title="Please enter exactly 6 digits" required autofocus>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.8rem; margin-top: 1rem;">
+                    Verify & Login
+                </button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted);">
+                Didn't receive the email? <a th:href="@{/login}" style="color: var(--primary); text-decoration: none;">Try logging in again</a>.
+            </p>
+        </div>
+    </main>
+
+    <div th:replace="~{layout :: footer}"></div>
+</body>
+</html>
